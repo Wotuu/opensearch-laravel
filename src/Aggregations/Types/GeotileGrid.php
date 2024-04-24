@@ -23,7 +23,6 @@ class GeotileGrid implements OpenSearchQuery, AggregationType
         $query = [
             'geotile_grid' => [
                 'field' => $this->field,
-                'precision' => $this->precision
             ]
         ];
 
@@ -31,7 +30,7 @@ class GeotileGrid implements OpenSearchQuery, AggregationType
             $query['geotile_grid']['precision'] = $this->precision;
         }
 
-        if(!is_null($this->precision)) {
+        if(!is_null($this->size)) {
             $query['geotile_grid']['size'] = $this->size;
         }
 

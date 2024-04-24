@@ -23,7 +23,6 @@ class GeohexGrid implements OpenSearchQuery, AggregationType
         $query = [
             'geohex_grid' => [
                 'field' => $this->field,
-                'precision' => $this->precision
             ]
         ];
 
@@ -31,7 +30,7 @@ class GeohexGrid implements OpenSearchQuery, AggregationType
             $query['geohex_grid']['precision'] = $this->precision;
         }
 
-        if(!is_null($this->precision)) {
+        if(!is_null($this->size)) {
             $query['geohex_grid']['size'] = $this->size;
         }
 
