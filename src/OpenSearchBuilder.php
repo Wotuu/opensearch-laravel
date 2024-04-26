@@ -74,9 +74,9 @@ class OpenSearchBuilder
         return $this;
     }
 
-    public function get(): array
+    public function toArray(): array
     {
-        $parameters = [
+        return [
             "index" => $this->model->openSearchIndexName(),
             "size" => $this->size,
             "body" => [
@@ -84,7 +84,10 @@ class OpenSearchBuilder
                 ...(isset($this->aggregationBuilder) ? $this->aggregationBuilder->toOpenSearchQuery() : [])
             ],
         ];
+    }
 
-        return $this->client->search($parameters);
+    public function get(): array
+    {
+        return $this->client->search($this->toArray());
     }
 }
