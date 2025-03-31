@@ -12,8 +12,8 @@ class Composite implements OpenSearchQuery, AggregationType
      */
     public function __construct(
         private readonly array $sources,
-        private readonly int $size,
-    ){}
+        private readonly int   $size,
+    ) {}
 
     public static function make(array $sources, int $size): self
     {
@@ -22,12 +22,18 @@ class Composite implements OpenSearchQuery, AggregationType
 
     public function toOpenSearchQuery(): array
     {
+        $sources = [];
+
+        foreach ($this->sources as $key => $source) {
+            $sources[] = [
+                $key => $source->toOpenSearchQuery()
+            ];
+        }
+
         return [
             'composite' => [
                 'size' => $this->size,
-                'sources' => array_map(function(OpenSearchQuery $source){
-                    return $source->toOpenSearchQuery();
-                }, $this->sources)
+                'sources' => $sources
             ]
         ];
     }
