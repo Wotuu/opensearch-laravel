@@ -6,10 +6,16 @@ use Codeart\OpensearchLaravel\Interfaces\OpenSearchQuery;
 
 class Composite implements OpenSearchQuery, AggregationType
 {
+    /**
+     * @param Terms[] $sources
+     * @param int $size
+     */
     public function __construct(
         private readonly array $sources,
-        private readonly int $size,
-    ){}
+        private readonly int   $size,
+    )
+    {
+    }
 
     public static function make(array $sources, int $size): self
     {
@@ -21,7 +27,9 @@ class Composite implements OpenSearchQuery, AggregationType
         return [
             'composite' => [
                 'size' => $this->size,
-                'sources' => $this->sources
+                'sources' => array_map(function (Terms $terms) {
+                    return $terms->toOpenSearchQuery();
+                }, $this->sources)
             ]
         ];
     }
